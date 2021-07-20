@@ -5,6 +5,7 @@
 #include "sqlserver_helper.h"
 #include "db_status_entity.h"
 #include "db_backup_log_entity.h"
+#include "db_table_data_count_entity.h"
 
 class db_status_sqlserver
 {
@@ -12,6 +13,7 @@ public:
 	vector<db_status_entity>GetDbStatus();
 	vector<DbBackupLogEntity>GetDbBackupLogAll();
 	void SaveDbStatus(db_status_entity db_status);
+	vector<DbTableDataCountEntity> getTableDataCount();
 };
 #endif
 

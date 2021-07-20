@@ -15,7 +15,8 @@
 using namespace std;
 void show(nanodbc::result& results);
 void ShowDBBackupStatus();
-void csv_create(std::string path);
+void csvCreateDbBackupLog(std::string path);
+void csvCreate(std::string path);
 
 int main()
 {
@@ -24,20 +25,30 @@ int main()
     std::cout << "boostライブラリバージョン:" << BOOST_LIB_VERSION << std::endl;
 
     std::string output_csv_file_path = "C:\\Users\\akira\\OneDrive\\デスクトップ\\test.csv";
+    std::string output_csv_file_path_tabledata_count = "C:\\Users\\akira\\OneDrive\\デスクトップ\\test2.csv";
 
     try {
         //ShowDBBackupStatus();
-        csv_create(output_csv_file_path);
+        //csvCreateDbBackupLog(output_csv_file_path);
+        csvCreate(output_csv_file_path_tabledata_count);
     }
     catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
 }
 
-void csv_create(std::string path) {
+void csvCreate(std::string path) {
+    std::unique_ptr<db_status_sqlserver> db_status(new db_status_sqlserver());
+    auto v = db_status->getTableDataCount();
+    std::ofstream ofs_csv_file(path);
+    ofs_csv_file << "db_name" << ',' << "table_name" << ',' << "row_count"<< "reserved_page_count_kb" << endl;
+}
+
+void csvCreateDbBackupLog(std::string path) {
     std::unique_ptr<db_status_sqlserver> db_status(new db_status_sqlserver());
     auto v = db_status->GetDbBackupLogAll();
     std::ofstream ofs_csv_file(path);
+    ofs_csv_file << "db_name" << ',' << "create_at" << ',' << "fullbackup_at" << endl;
 
     for (auto itr = v.begin(); itr != v.end(); ++itr) {
         ofs_csv_file << itr._Ptr->Get_dbName() << ',';
@@ -45,7 +56,6 @@ void csv_create(std::string path) {
         ofs_csv_file << itr._Ptr->Get_displayFullBackupDate() << ',';
         ofs_csv_file << endl;
     }
-    
 }
 
 void ShowDBBackupStatus() {

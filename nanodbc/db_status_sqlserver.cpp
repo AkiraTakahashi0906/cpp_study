@@ -1,5 +1,43 @@
 #include "db_status_sqlserver.h"
 
+vector<DbTableDataCountEntity> db_status_sqlserver::getTableDataCount()
+{
+    string sql = "\
+    SELECT\
+        DB_NAME() AS DbName,\
+        SCHEMA_NAME(so.schema_id) AS SchemaName,\
+        so.name,\
+        dps.*,\
+        dps.reserved_page_count * 8.0 AS reserved_page_count_kb\
+    FROM\
+        sys.dm_db_partition_stats dps\
+    INNER JOIN\
+        sys.objects so\
+    ON\
+        so.object_id = dps.object_id\
+    AND\
+    SCHEMA_NAME(so.schema_id) < > 'sys'\
+    WHERE index_id IN(0, 1)\
+    ORDER BY so.name\
+    OPTION(RECOMPILE)\
+";
+    vector<SqlParameter> parameters;
+
+    std::unique_ptr<SqlserverHelper> helper(new SqlserverHelper);
+    nanodbc::result results;
+    results = helper->Query(sql, parameters);
+    vector<DbTableDataCountEntity> list;
+    while (results.next())
+    {
+        list.push_back(DbTableDataCountEntity(results.get<string>("DbName"),
+                                                                    results.get<string>("name"),
+                                                                    results.get<int>("row_count"),
+                                                                    results.get<double>("reserved_page_count_kb")));
+    }
+
+    return list;
+}
+
 vector<DbBackupLogEntity> db_status_sqlserver::GetDbBackupLogAll()
 {
     string sql = "\
@@ -235,3 +273,5 @@ void db_status_sqlserver::SaveDbStatus(db_status_entity db_status)
     querys.push_back(std::make_pair(sql3, parameters2));
     helper->execute_transaction(querys);
 }
+
+

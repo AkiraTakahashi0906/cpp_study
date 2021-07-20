@@ -154,6 +154,7 @@
     <ClCompile Include="db_backup_log_entity.cpp" />
     <ClCompile Include="db_status_entity.cpp" />
     <ClCompile Include="db_status_sqlserver.cpp" />
+    <ClCompile Include="db_table_data_count_entity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="nanodbc.cpp" />
     <ClCompile Include="sqlserver_helper.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="db_backup_log_entity.h" />
     <ClInclude Include="db_status_entity.h" />
     <ClInclude Include="db_status_sqlserver.h" />
+    <ClInclude Include="db_table_data_count_entity.h" />
     <ClInclude Include="nanodbc.h" />
     <ClInclude Include="sqlserver_helper.h" />
     <ClInclude Include="time_helper.h" />

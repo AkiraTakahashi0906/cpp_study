@@ -33,6 +33,9 @@
     <ClInclude Include="db_backup_log_entity.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="db_table_data_count_entity.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,6 +57,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="db_backup_log_entity.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="db_table_data_count_entity.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
